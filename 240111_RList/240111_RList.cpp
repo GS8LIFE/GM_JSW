@@ -22,16 +22,16 @@ public:
 		friend MyList;
 
 	public:
-		reverse_iterator()
+		iterator()
 		{
 		}
 
-		reverse_iterator(ListNode* _CurNode)
+		iterator(ListNode* _CurNode)
 			: CurNode(_CurNode)
 		{
 		}
 
-		bool operator!=(const reverse_iterator& _Other)
+		bool operator!=(const iterator& _Other)
 		{
 			return CurNode != _Other.CurNode;
 		}
@@ -73,14 +73,14 @@ public:
 		}
 	}
 
-	reverse_iterator rbegin()
+	iterator rbegin()
 	{
-		return reverse_iterator(End->Prev);
+		return iterator(End->Prev);
 	}
 
-	reverse_iterator rend()
+	iterator rend()
 	{
-		return reverse_iterator(Start);
+		return iterator(Start);
 	}
 	// End의 Prev에 새로운 데이터를 넣겠다.
 	void push_back(const DataType& _Data)
@@ -116,7 +116,7 @@ public:
 
 	}
 
-	reverse_iterator erase(reverse_iterator& _Iter)
+	iterator erase(iterator& _Iter)
 	{
 		if (_Iter.CurNode == Start)
 		{
@@ -128,11 +128,11 @@ public:
 			MsgBoxAssert("End를 삭제하려고 했습니다.");
 		}
 
-		reverse_iterator ReturnIter;
+		iterator ReturnIter;
 
 		if (nullptr != _Iter.CurNode)
 		{
-			ReturnIter = reverse_iterator(_Iter.CurNode->Next);
+			ReturnIter = iterator(_Iter.CurNode->Next);
 
 			ListNode* PrevNode = _Iter.CurNode->Prev;
 			ListNode* NextNode = _Iter.CurNode->Next;
