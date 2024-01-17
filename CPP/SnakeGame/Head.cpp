@@ -65,9 +65,25 @@ void Head::move(int _select,int _nowSelect)
 
 void Head::Update()
 {
-	
+	std::vector<int2> snake;
 	int2 whead = GetPos();
 	nowHead = whead;
+
+	std::vector<int2> MyBodyPositionVector;
+	Part* CurPart = this->Back;
+	while (CurPart)
+	{
+		//프론트의 이전위치를 기억해서 이동
+		Part* FrontPart = CurPart->Front;
+		CurPart->nowHead = CurPart->GetPos();
+		CurPart->SetPos(FrontPart->nowHead);
+
+		//바디들을 바디벡터에 넣음
+		int2 CurPosition = CurPart->GetPos();
+		MyBodyPositionVector.push_back(CurPosition);
+
+		CurPart = CurPart->Back;
+	}
 
 	bool InputCount = _kbhit();
 	if (InputCount)
@@ -94,7 +110,15 @@ void Head::Update()
 
 	if (CurBody->GetPos() == GetPos())
 	{
-		Back = CurBody;
+		Part* CurNode = this;
+		while (CurNode->Back)
+		{
+			CurNode = CurNode->Back;
+		}
+		CurBody->Front = CurNode;
+		CurNode->Back = CurBody;
+		CurBody->SetPos(CurNode->nowHead);
+
 		BodyManager::ResetBody();
 	}
 	
